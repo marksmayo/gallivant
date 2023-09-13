@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
-from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QWidget, QAction, QMenu, QMenuBar
+from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QWidget, QAction, QMenu, QMenuBar, QInputDialog, QLineEdit
 
 class MyPage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, msg, line, sourceID):
@@ -93,9 +93,12 @@ class MyWindow(QMainWindow):
     def elementClicked(self, elementInfo):
         elementInfo = eval(elementInfo)
         sentence = "This is a sample sentence."
+        current_url = self.browser.url().toString()
+        text, okPressed = QInputDialog.getText(self, "Annotation", "Your sentence:", QLineEdit.Normal, "")
+        if okPressed and text != '':
+            entry = f"URL: {current_url}, XPath: {elementInfo['tag']}, ID: {elementInfo['id']}, Class: {elementInfo['class']}, Text: {elementInfo['text']} - {text}"
+            self.listWidget.addItem(entry)
 
-        entry = f"Tag: {elementInfo['tag']}, ID: {elementInfo['id']}, Class: {elementInfo['class']}, Text: {elementInfo['text']}\nSentence: {sentence}"
-        self.listWidget.addItem(entry)
 
 
 if __name__ == "__main__":
