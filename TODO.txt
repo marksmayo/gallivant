@@ -2,8 +2,6 @@ TODO
 
 register URLs, element, text
 put register in cells in column
-menu bar
-File-exit
 Help-about
 Options->Configuration
 Configuration - URL

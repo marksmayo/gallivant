@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
-from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QWidget, QAction, QMenu, QMenuBar
 
 class MyPage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, msg, line, sourceID):
@@ -14,6 +14,27 @@ class MyWindow(QMainWindow):
 
         self.setWindowIcon(QIcon('images/gallivant.png'))
         self.setWindowTitle("Gallivant - an exploratory testing tool")
+
+        # Create menu bar
+        self.menuBar = QMenuBar()
+
+        # Create File menu and add it to menu bar
+        self.fileMenu = QMenu('Session', self)
+        self.menuBar.addMenu(self.fileMenu)
+
+        # Create Exit action and add it to File menu
+        self.exitAction = QAction('Exit', self)
+        self.exitAction.triggered.connect(self.exitApp)
+        self.fileMenu.addAction(self.exitAction)
+
+        self.helpMenu = QMenu('Help', self)
+        self.menuBar.addMenu(self.helpMenu)
+
+        self.aboutAction = QAction('About', self)
+        self.helpMenu.addAction(self.aboutAction)
+
+        # Set the menu bar
+        self.setMenuBar(self.menuBar)
 
         self.browser = QWebEngineView()
         self.browser.setPage(MyPage(self.browser))
@@ -37,6 +58,10 @@ class MyWindow(QMainWindow):
         self.channel = QWebChannel()
         self.channel.registerObject('myObj', self)
         self.browser.page().setWebChannel(self.channel)
+
+    def exitApp(self):
+        """Exit the application."""
+        self.close()
 
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
