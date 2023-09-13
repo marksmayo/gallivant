@@ -12,7 +12,7 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super(MyWindow, self).__init__()
 
-        self.setWindowIcon(QIcon('gallivant.png'))
+        self.setWindowIcon(QIcon('images/gallivant.png'))
         self.setWindowTitle("Gallivant - an exploratory testing tool")
 
         self.browser = QWebEngineView()
@@ -41,7 +41,7 @@ class MyWindow(QMainWindow):
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
         if ok:
-            with open("qwebchannel.js", "r") as f:
+            with open("js/qwebchannel.js", "r") as f:
                 js = f.read()
 
             self.browser.page().runJavaScript(js)
