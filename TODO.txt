@@ -1,0 +1,19 @@
+TODO
+
+register URLs, element, text
+put register in cells in column
+menu bar
+File-exit
+Help-about
+Options->Configuration
+Configuration - URL
+Configuration - command to generate a record
+Config file
+Load from config file
+handle pop-up entry of text
+save to file as we go, and on exit, json format.
+handle other formats?
+Menu File->Load
+Load from file
+Playback? would need to record every click/keystroke (option, given security risks)
+Click on record and go to url and highlight item on page
