@@ -1,7 +1,6 @@
 TODO
 
 put register in cells in column
-Help-about
 Options->Configuration
 Configuration - URL
 Configuration - command to generate a record

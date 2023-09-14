@@ -2,7 +2,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
-from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QWidget, QAction, QMenu, QMenuBar, QInputDialog, QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QListWidget, QHBoxLayout, QVBoxLayout, QWidget, QAction, QMenu, QMenuBar, QInputDialog, QLineEdit, QDialog, QLabel, QPushButton, QMessageBox
 
 class MyPage(QWebEnginePage):
     def javaScriptConsoleMessage(self, level, msg, line, sourceID):
@@ -31,7 +31,9 @@ class MyWindow(QMainWindow):
         self.menuBar.addMenu(self.helpMenu)
 
         self.aboutAction = QAction('About', self)
+        self.aboutAction.triggered.connect(self.showAbout)
         self.helpMenu.addAction(self.aboutAction)
+
 
         # Set the menu bar
         self.setMenuBar(self.menuBar)
@@ -62,6 +64,15 @@ class MyWindow(QMainWindow):
     def exitApp(self):
         """Exit the application."""
         self.close()
+
+    def showAbout(self):
+        dialog = QMessageBox(self)
+        dialog.setText("Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.")
+        dialog.setWindowTitle("About Gallivant")
+        dialog.setIcon(QMessageBox.Information)
+        dialog.exec()
+
+
 
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
