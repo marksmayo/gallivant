@@ -1,4 +1,4 @@
-name: Build
+name: Black
 
 on: [push, pull_request]
 
