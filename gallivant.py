@@ -28,7 +28,7 @@ class Gallivant(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        qInstallMessageHandler(lambda x,y,z: None)
+        qInstallMessageHandler(lambda x, y, z: None)
         self.setWindowIcon(QIcon("images/gallivant.png"))
         self.setWindowTitle("Gallivant - an exploratory testing tool")
 
