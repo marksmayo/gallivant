@@ -3,7 +3,20 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTreeWidgetItem, QHBoxLayout, QWidget, QAction, QMenu, QMenuBar, QInputDialog, QLineEdit, QMessageBox, QTreeWidget
+from PyQt5.QtWidgets import (
+    QApplication,
+    QMainWindow,
+    QTreeWidgetItem,
+    QHBoxLayout,
+    QWidget,
+    QAction,
+    QMenu,
+    QMenuBar,
+    QInputDialog,
+    QLineEdit,
+    QMessageBox,
+    QTreeWidget,
+)
 
 
 class MyPage(QWebEnginePage):
@@ -15,14 +28,14 @@ class Gallivant(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowIcon(QIcon('images/gallivant.png'))
+        self.setWindowIcon(QIcon("images/gallivant.png"))
         self.setWindowTitle("Gallivant - an exploratory testing tool")
 
         # Create menu bar
         self.menuBar = QMenuBar()
 
         # Create File menu and add it to menu bar
-        self.fileMenu = QMenu('Session', self)
+        self.fileMenu = QMenu("Session", self)
         self.menuBar.addMenu(self.fileMenu)
 
         # Initialize QTreeWidget to keep track of clicked elements and sentences
@@ -30,14 +43,14 @@ class Gallivant(QMainWindow):
         self.treeWidget.setHeaderLabels(["Annotation", "Details", "Timestamp"])
 
         # Create Exit action and add it to File menu
-        self.exitAction = QAction('Exit', self)
+        self.exitAction = QAction("Exit", self)
         self.exitAction.triggered.connect(self.exitApp)
         self.fileMenu.addAction(self.exitAction)
 
-        self.helpMenu = QMenu('Help', self)
+        self.helpMenu = QMenu("Help", self)
         self.menuBar.addMenu(self.helpMenu)
 
-        self.aboutAction = QAction('About', self)
+        self.aboutAction = QAction("About", self)
         self.aboutAction.triggered.connect(self.showAbout)
         self.helpMenu.addAction(self.aboutAction)
 
@@ -61,7 +74,7 @@ class Gallivant(QMainWindow):
 
         # Set up QWebChannel
         self.channel = QWebChannel()
-        self.channel.registerObject('myObj', self)
+        self.channel.registerObject("myObj", self)
         self.browser.page().setWebChannel(self.channel)
 
     def exitApp(self):
@@ -70,7 +83,9 @@ class Gallivant(QMainWindow):
 
     def showAbout(self):
         dialog = QMessageBox(self)
-        dialog.setText("Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.")
+        dialog.setText(
+            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore."
+        )
         dialog.setWindowTitle("About Gallivant")
         dialog.setIcon(QMessageBox.Information)
         dialog.exec()
@@ -82,7 +97,8 @@ class Gallivant(QMainWindow):
                 js = f.read()
 
             self.browser.page().runJavaScript(js)
-            self.browser.page().runJavaScript("""
+            self.browser.page().runJavaScript(
+                """
                 var channel = new QWebChannel(qt.webChannelTransport, function(channel) {
                     window.myObj = channel.objects.myObj;
 
@@ -99,14 +115,17 @@ class Gallivant(QMainWindow):
                         }
                     });
                 });
-            """)
+            """
+            )
 
     @pyqtSlot(str)
     def elementClicked(self, elementInfo):
         elementInfo = eval(elementInfo)
         current_url = self.browser.url().toString()
-        text, okPressed = QInputDialog.getText(self, "Annotation", "Your sentence:", QLineEdit.Normal, "")
-        if okPressed and text != '':
+        text, okPressed = QInputDialog.getText(
+            self, "Annotation", "Your sentence:", QLineEdit.Normal, ""
+        )
+        if okPressed and text != "":
             entry = f"{text}"
             timestamp = datetime.now().strftime("%H:%M:%S")  # Get current time
 
@@ -120,19 +139,19 @@ class Gallivant(QMainWindow):
 
             child2 = QTreeWidgetItem(item)
             child2.setText(0, "XPath")
-            child2.setText(1, elementInfo['tag'])
+            child2.setText(1, elementInfo["tag"])
 
             child3 = QTreeWidgetItem(item)
             child3.setText(0, "ID")
-            child3.setText(1, elementInfo['id'])
+            child3.setText(1, elementInfo["id"])
 
             child4 = QTreeWidgetItem(item)
             child4.setText(0, "Class")
-            child4.setText(1, elementInfo['class'])
+            child4.setText(1, elementInfo["class"])
 
             child5 = QTreeWidgetItem(item)
             child5.setText(0, "Text")
-            child5.setText(1, elementInfo['text'])
+            child5.setText(1, elementInfo["text"])
 
 
 if __name__ == "__main__":
