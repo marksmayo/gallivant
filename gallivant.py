@@ -28,6 +28,7 @@ class Gallivant(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        qInstallMessageHandler(lambda x,y,z: None)
         self.setWindowIcon(QIcon("images/gallivant.png"))
         self.setWindowTitle("Gallivant - an exploratory testing tool")
 
@@ -38,7 +39,7 @@ class Gallivant(QMainWindow):
         self.fileMenu = QMenu("Session", self)
         self.menuBar.addMenu(self.fileMenu)
 
-        # Initialize QTreeWidget to keep track of clicked elements and sentences
+        # Initialize QTreeWidget to keep track of clicked elements and annotations
         self.treeWidget = QTreeWidget()
         self.treeWidget.setHeaderLabels(["Annotation", "Details", "Timestamp"])
 
@@ -123,7 +124,7 @@ class Gallivant(QMainWindow):
         elementInfo = eval(elementInfo)
         current_url = self.browser.url().toString()
         text, okPressed = QInputDialog.getText(
-            self, "Annotation", "Your sentence:", QLineEdit.Normal, ""
+            self, "Annotation", "Your annotation:", QLineEdit.Normal, ""
         )
         if okPressed and text != "":
             entry = f"{text}"
