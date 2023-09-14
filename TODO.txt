@@ -1,6 +1,5 @@
 TODO
 
-put register in cells in column
 Options->Configuration
 Configuration - URL
 Configuration - command to generate a record
@@ -14,6 +13,5 @@ Playback? would need to record every click/keystroke (option, given security ris
 Click on record and go to url and highlight item on page
 Screenshots when you record a register
 Embed annotation in screenshot, with element highlighted?
-Timestamps
 Reports - url with most click events, etc
 Classify registers as notes, bugs, feedback
