@@ -1,0 +1,18 @@
+[
+  {
+    "field": "base_url",
+    "value": "https://www.google.com"
+  },
+  {
+    "field": "annotation_format",
+    "value": "json"
+  },
+  {
+    "field": "report_folder",
+    "value": "report"
+  },
+  {
+    "field": "save_steps",
+    "value": false
+  }
+]
