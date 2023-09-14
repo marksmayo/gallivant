@@ -1,4 +1,4 @@
-![Build status](https://github.com/marksmayo/gallivant/blob/main/.github/workflows/black.yml/badge.svg)
+![Build status](https://github.com/marksmayo/gallivant/blob/main/.github/actions/workflows/black.yml/badge.svg)
 # gallivant
 Exploratory testing tool
 
