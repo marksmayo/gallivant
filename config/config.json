@@ -1,18 +1,6 @@
-[
-  {
-    "field": "base_url",
-    "value": "https://www.google.com"
-  },
-  {
-    "field": "annotation_format",
-    "value": "json"
-  },
-  {
-    "field": "report_folder",
-    "value": "report"
-  },
-  {
-    "field": "save_steps",
-    "value": false
-  }
-]
+{
+  "url": "https://www.trademe.co.nz",
+  "annotation_format": "json",
+  "report_folder" : "report",
+  "save_steps" : "false"
+}

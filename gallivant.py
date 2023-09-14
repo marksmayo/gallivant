@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from PyQt5.QtCore import *
 from PyQt5.QtGui import QIcon
@@ -30,7 +31,7 @@ class Gallivant(QMainWindow):
 
         qInstallMessageHandler(lambda x, y, z: None)
         self.setWindowIcon(QIcon("images/gallivant.png"))
-        self.setWindowTitle("Gallivant - an exploratory testing tool")
+        self.setWindowTitle("Gallivant - an exploratory testing and copy change tool")
 
         # Create menu bar
         self.menuBar = QMenuBar()
@@ -48,6 +49,13 @@ class Gallivant(QMainWindow):
         self.exitAction.triggered.connect(self.exitApp)
         self.fileMenu.addAction(self.exitAction)
 
+        self.optionsMenu = QMenu("Options", self)
+        self.menuBar.addMenu(self.optionsMenu)
+
+        self.configAction = QAction("Configuration", self)
+        self.configAction.triggered.connect(self.showConfiguration)
+        self.optionsMenu.addAction(self.configAction)
+
         self.helpMenu = QMenu("Help", self)
         self.menuBar.addMenu(self.helpMenu)
 
@@ -58,9 +66,13 @@ class Gallivant(QMainWindow):
         # Set the menu bar
         self.setMenuBar(self.menuBar)
 
+        config = self.loadConfig()
+        print(config)
+        url = config["url"]
+
         self.browser = QWebEngineView()
         self.browser.setPage(MyPage(self.browser))
-        self.browser.setUrl(QUrl("https://www.google.com"))
+        self.browser.setUrl(QUrl(url))
 
         self.browser.loadFinished.connect(self.onLoadFinished)
 
@@ -78,11 +90,28 @@ class Gallivant(QMainWindow):
         self.channel.registerObject("myObj", self)
         self.browser.page().setWebChannel(self.channel)
 
+    def loadConfig(self):
+        config = ""
+        with open("config/config.json", "r") as conf:
+            config = json.load(conf)
+
+        conf.close()
+        return config
+
     def exitApp(self):
         """Exit the application."""
         self.close()
 
     def showAbout(self):
+        dialog = QMessageBox(self)
+        dialog.setText(
+            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore."
+        )
+        dialog.setWindowTitle("About Gallivant")
+        dialog.setIcon(QMessageBox.Information)
+        dialog.exec()
+
+    def showConfiguration(self):
         dialog = QMessageBox(self)
         dialog.setText(
             "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore."
