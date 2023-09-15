@@ -37,7 +37,7 @@ class Gallivant(QMainWindow):
         self.menuBar = QMenuBar()
 
         # Create File menu and add it to menu bar
-        self.fileMenu = QMenu("Session", self)
+        self.fileMenu = QMenu("&Session", self)
         self.menuBar.addMenu(self.fileMenu)
 
         # Initialize QTreeWidget to keep track of clicked elements and annotations
@@ -45,21 +45,21 @@ class Gallivant(QMainWindow):
         self.treeWidget.setHeaderLabels(["Annotation", "Details", "Timestamp"])
 
         # Create Exit action and add it to File menu
-        self.exitAction = QAction("Exit", self)
+        self.exitAction = QAction("E&xit", self)
         self.exitAction.triggered.connect(self.exitApp)
         self.fileMenu.addAction(self.exitAction)
 
-        self.optionsMenu = QMenu("Options", self)
+        self.optionsMenu = QMenu("&Options", self)
         self.menuBar.addMenu(self.optionsMenu)
 
-        self.configAction = QAction("Configuration", self)
+        self.configAction = QAction("&Configuration", self)
         self.configAction.triggered.connect(self.showConfiguration)
         self.optionsMenu.addAction(self.configAction)
 
-        self.helpMenu = QMenu("Help", self)
+        self.helpMenu = QMenu("&Help", self)
         self.menuBar.addMenu(self.helpMenu)
 
-        self.aboutAction = QAction("About", self)
+        self.aboutAction = QAction("&About", self)
         self.aboutAction.triggered.connect(self.showAbout)
         self.helpMenu.addAction(self.aboutAction)
 
