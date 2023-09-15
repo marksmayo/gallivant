@@ -6,8 +6,11 @@ from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import (
     QAction,
+    QDialog,
+    QDialogButtonBox,
     QHBoxLayout,
     QInputDialog,
+    QLabel,
     QLineEdit,
     QMainWindow,
     QMenu,
@@ -15,6 +18,7 @@ from PyQt5.QtWidgets import (
     QMessageBox,
     QTreeWidget,
     QTreeWidgetItem,
+    QVBoxLayout,
     QWidget,
 )
 
@@ -80,6 +84,31 @@ class Gallivant(QMainWindow):
     def exitApp(self):
         self.close()
 
+    def showUrlDialog(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Enter URL")
+
+        layout = QVBoxLayout()
+
+        label = QLabel("Enter the URL:")
+        layout.addWidget(label)
+
+        urlInput = QLineEdit()
+        layout.addWidget(urlInput)
+
+        buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+
+        dialog.setLayout(layout)
+
+        result = dialog.exec_()
+        if result == QDialog.Accepted:
+            entered_url = urlInput.text()
+            # Do something with the entered URL, like loading it into the browser
+            self.browser.setUrl(QUrl(entered_url))
+
     def showDialog(self, title):
         dialog = QMessageBox(self)
         dialog.setWindowTitle(title)
@@ -93,7 +122,7 @@ class Gallivant(QMainWindow):
         self.showDialog("About Gallivant")
 
     def showConfig(self):
-        self.showDialog("Configuration")
+        self.showUrlDialog()
 
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
