@@ -1,7 +1,5 @@
 TODO
 
-Options->Configuration
-Configuration - URL
 Configuration - command to generate a record
 save to file as we go, and on exit, json format.
 handle other formats?

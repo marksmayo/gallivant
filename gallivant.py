@@ -44,7 +44,7 @@ class Gallivant(QMainWindow):
         )
 
         self.addActions(fileMenu, [("E&xit", self.exitApp)])
-        self.addActions(optionsMenu, [("&Configuration", self.showConfig)])
+        self.addActions(optionsMenu, [("&Change URL", self.showConfig)])
         self.addActions(helpMenu, [("&About", self.showAbout)])
 
         self.menuBar.addMenu(fileMenu)
