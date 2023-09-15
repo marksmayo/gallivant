@@ -1,28 +1,25 @@
-import json
 from datetime import datetime
-from PyQt5.QtCore import *
+
+from PyQt5.QtCore import QUrl, pyqtSlot, qInstallMessageHandler
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QTreeWidgetItem,
-    QHBoxLayout,
-    QWidget,
     QAction,
-    QMenu,
-    QMenuBar,
+    QHBoxLayout,
     QInputDialog,
     QLineEdit,
+    QMainWindow,
+    QMenu,
+    QMenuBar,
     QMessageBox,
     QTreeWidget,
+    QTreeWidgetItem,
+    QWidget,
 )
 
-
-class MyPage(QWebEnginePage):
-    def javaScriptConsoleMessage(self, level, msg, line, sourceID):
-        print("JS console message:", msg)
+from config_manager import load_config
+from webengine import WebEngine
 
 
 class Gallivant(QMainWindow):
@@ -66,12 +63,12 @@ class Gallivant(QMainWindow):
         # Set the menu bar
         self.setMenuBar(self.menuBar)
 
-        config = self.loadConfig()
+        config = load_config()
         print(config)
         url = config["url"]
 
         self.browser = QWebEngineView()
-        self.browser.setPage(MyPage(self.browser))
+        self.browser.setPage(WebEngine(self.browser))
         self.browser.setUrl(QUrl(url))
 
         self.browser.loadFinished.connect(self.onLoadFinished)
@@ -90,14 +87,6 @@ class Gallivant(QMainWindow):
         self.channel.registerObject("myObj", self)
         self.browser.page().setWebChannel(self.channel)
 
-    def loadConfig(self):
-        config = ""
-        with open("config/config.json", "r") as conf:
-            config = json.load(conf)
-
-        conf.close()
-        return config
-
     def exitApp(self):
         """Exit the application."""
         self.close()
@@ -105,7 +94,7 @@ class Gallivant(QMainWindow):
     def showAbout(self):
         dialog = QMessageBox(self)
         dialog.setText(
-            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore."
+            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
         )
         dialog.setWindowTitle("About Gallivant")
         dialog.setIcon(QMessageBox.Information)
@@ -114,7 +103,7 @@ class Gallivant(QMainWindow):
     def showConfiguration(self):
         dialog = QMessageBox(self)
         dialog.setText(
-            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore."
+            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
         )
         dialog.setWindowTitle("About Gallivant")
         dialog.setIcon(QMessageBox.Information)
@@ -145,7 +134,7 @@ class Gallivant(QMainWindow):
                         }
                     });
                 });
-            """
+            """,
             )
 
     @pyqtSlot(str)
@@ -153,7 +142,11 @@ class Gallivant(QMainWindow):
         elementInfo = eval(elementInfo)
         current_url = self.browser.url().toString()
         text, okPressed = QInputDialog.getText(
-            self, "Annotation", "Your annotation:", QLineEdit.Normal, ""
+            self,
+            "Annotation",
+            "Your annotation:",
+            QLineEdit.Normal,
+            "",
         )
         if okPressed and text != "":
             entry = f"{text}"
@@ -182,10 +175,3 @@ class Gallivant(QMainWindow):
             child5 = QTreeWidgetItem(item)
             child5.setText(0, "Text")
             child5.setText(1, elementInfo["text"])
-
-
-if __name__ == "__main__":
-    app = QApplication([])
-    myWin = Gallivant()
-    myWin.show()
-    app.exec_()
