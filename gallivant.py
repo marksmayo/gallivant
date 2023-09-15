@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from PyQt5.QtCore import QUrl, pyqtSlot, qInstallMessageHandler
+from PyQt5.QtCore import QUrl, pyqtSlot
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
@@ -25,55 +25,33 @@ from webengine import WebEngine
 class Gallivant(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        qInstallMessageHandler(lambda x, y, z: None)
-        self.setWindowIcon(QIcon("images/gallivant.png"))
-        self.setWindowTitle("Gallivant - an exploratory testing and copy change tool")
-
-        # Create menu bar
-        self.menuBar = QMenuBar()
-
-        # Create File menu and add it to menu bar
-        self.fileMenu = QMenu("&Session", self)
-        self.menuBar.addMenu(self.fileMenu)
-
-        # Initialize QTreeWidget to keep track of clicked elements and annotations
-        self.treeWidget = QTreeWidget()
-        self.treeWidget.setHeaderLabels(["Annotation", "Details", "Timestamp"])
-
-        # Create Exit action and add it to File menu
-        self.exitAction = QAction("E&xit", self)
-        self.exitAction.triggered.connect(self.exitApp)
-        self.fileMenu.addAction(self.exitAction)
-
-        self.optionsMenu = QMenu("&Options", self)
-        self.menuBar.addMenu(self.optionsMenu)
-
-        self.configAction = QAction("&Configuration", self)
-        self.configAction.triggered.connect(self.showConfiguration)
-        self.optionsMenu.addAction(self.configAction)
-
-        self.helpMenu = QMenu("&Help", self)
-        self.menuBar.addMenu(self.helpMenu)
-
-        self.aboutAction = QAction("&About", self)
-        self.aboutAction.triggered.connect(self.showAbout)
-        self.helpMenu.addAction(self.aboutAction)
-
-        # Set the menu bar
-        self.setMenuBar(self.menuBar)
-
-        config = load_config()
-        print(config)
-        url = config["url"]
-
-        self.browser = QWebEngineView()
-        self.browser.setPage(WebEngine(self.browser))
-        self.browser.setUrl(QUrl(url))
-
+        self.setupUI()
         self.browser.loadFinished.connect(self.onLoadFinished)
 
-        # Main layout and widget
+    def setupUI(self):
+        self.setWindowTitle("Gallivant")
+        self.setWindowIcon(QIcon("images/gallivant.png"))
+
+        self.menuBar = QMenuBar(self)
+        fileMenu, optionsMenu, helpMenu = (
+            QMenu("&Session", self),
+            QMenu("&Options", self),
+            QMenu("&Help", self),
+        )
+
+        self.addActions(fileMenu, [("E&xit", self.exitApp)])
+        self.addActions(optionsMenu, [("&Configuration", self.showConfig)])
+        self.addActions(helpMenu, [("&About", self.showAbout)])
+
+        self.menuBar.addMenu(fileMenu)
+        self.menuBar.addMenu(optionsMenu)
+        self.menuBar.addMenu(helpMenu)
+
+        self.setMenuBar(self.menuBar)
+
+        self.treeWidget = self.initTreeWidget()
+        self.browser = self.initBrowser(load_config()["url"])
+
         layout = QHBoxLayout()
         layout.addWidget(self.treeWidget)
         layout.addWidget(self.browser)
@@ -82,32 +60,40 @@ class Gallivant(QMainWindow):
         container.setLayout(layout)
         self.setCentralWidget(container)
 
-        # Set up QWebChannel
-        self.channel = QWebChannel()
-        self.channel.registerObject("myObj", self)
-        self.browser.page().setWebChannel(self.channel)
+    def addActions(self, menu, actions):
+        for name, func in actions:
+            action = QAction(name, self)
+            action.triggered.connect(func)
+            menu.addAction(action)
+
+    def initTreeWidget(self):
+        tree = QTreeWidget()
+        tree.setHeaderLabels(["Annotation", "Details", "Timestamp"])
+        return tree
+
+    def initBrowser(self, url):
+        browser = QWebEngineView()
+        browser.setPage(WebEngine(browser))
+        browser.setUrl(QUrl(url))
+        return browser
 
     def exitApp(self):
-        """Exit the application."""
         self.close()
 
-    def showAbout(self):
+    def showDialog(self, title):
         dialog = QMessageBox(self)
+        dialog.setWindowTitle(title)
         dialog.setText(
             "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
         )
-        dialog.setWindowTitle("About Gallivant")
         dialog.setIcon(QMessageBox.Information)
         dialog.exec()
 
-    def showConfiguration(self):
-        dialog = QMessageBox(self)
-        dialog.setText(
-            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
-        )
-        dialog.setWindowTitle("About Gallivant")
-        dialog.setIcon(QMessageBox.Information)
-        dialog.exec()
+    def showAbout(self):
+        self.showDialog("About Gallivant")
+
+    def showConfig(self):
+        self.showDialog("Configuration")
 
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
