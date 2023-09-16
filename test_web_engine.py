@@ -2,11 +2,10 @@ import sys
 import pytest
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QUrl
-from webengine import (
-    WebEngine,
-)  # replace 'your_module' with the actual module name where WebEngine is defined
+from webengine import WebEngine
 
-app = QApplication(sys.argv)  # Create an instance of QApplication. Required for PyQt5.
+# Create an instance of QApplication. Required for PyQt5.
+app = QApplication(sys.argv)
 
 
 def test_java_script_console_message(mocker):
