@@ -84,7 +84,19 @@ class Gallivant(QMainWindow):
     def exitApp(self):
         self.close()
 
-    def showUrlDialog(self):
+    def showDialog(self, title):
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle(title)
+        dialog.setText(
+            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
+        )
+        dialog.setIcon(QMessageBox.Information)
+        dialog.exec()
+
+    def showAbout(self):
+        self.showDialog("About Gallivant")
+
+    def showConfig(self):
         dialog = QDialog(self)
         dialog.setWindowTitle("Enter URL")
 
@@ -108,21 +120,6 @@ class Gallivant(QMainWindow):
             entered_url = urlInput.text()
             # Do something with the entered URL, like loading it into the browser
             self.browser.setUrl(QUrl(entered_url))
-
-    def showDialog(self, title):
-        dialog = QMessageBox(self)
-        dialog.setWindowTitle(title)
-        dialog.setText(
-            "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.  If you come across something you want to note, Ctrl-Click the element of interest, and write an annotation. This is stored and you can continue to explore.",
-        )
-        dialog.setIcon(QMessageBox.Information)
-        dialog.exec()
-
-    def showAbout(self):
-        self.showDialog("About Gallivant")
-
-    def showConfig(self):
-        self.showUrlDialog()
 
     @pyqtSlot(bool)
     def onLoadFinished(self, ok):
