@@ -2,10 +2,10 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import (
     QDialog,
     QDialogButtonBox,
-    QVBoxLayout,
     QLabel,
     QLineEdit,
     QMessageBox,
+    QVBoxLayout,
 )
 
 

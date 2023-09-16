@@ -1,5 +1,7 @@
 import json
+
 import pytest
+
 from config_manager import load_config
 
 
