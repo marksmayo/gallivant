@@ -1,6 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QWidget
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QUrl
 from menubar import MenuBarManager
 from widgets import TreeWidget, Browser
 from dialogs import showDialog, showConfig

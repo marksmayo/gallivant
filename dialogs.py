@@ -1,3 +1,4 @@
+from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import (
     QDialog,
     QDialogButtonBox,
@@ -5,7 +6,6 @@ from PyQt5.QtWidgets import (
     QLabel,
     QLineEdit,
     QMessageBox,
-    QInputDialog,
 )
 
 
