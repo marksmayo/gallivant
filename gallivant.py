@@ -1,9 +1,10 @@
-from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QWidget
 from PyQt5.QtGui import QIcon
-from menubar import MenuBarManager
-from widgets import TreeWidget, Browser
-from dialogs import showDialog, showConfig
+from PyQt5.QtWidgets import QHBoxLayout, QMainWindow, QWidget
+
 from config_manager import load_config
+from dialogs import showConfig, showDialog
+from menubar import MenuBarManager
+from widgets import Browser, TreeWidget
 
 
 class Gallivant(QMainWindow):
@@ -21,7 +22,7 @@ class Gallivant(QMainWindow):
         self.setMenuBar(self.menuBarManager.createMenuBar())
 
         self.treeWidget = TreeWidget()
-        self.browser = Browser(load_config()["url"])
+        self.browser = Browser(load_config()["url"], self.treeWidget)
 
         layout = QHBoxLayout()
         layout.addWidget(self.treeWidget)
