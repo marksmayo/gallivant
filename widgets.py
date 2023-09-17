@@ -57,6 +57,7 @@ class Browser(QWebEngineView):
                     document.addEventListener('click', function(event) {
                         if (event.ctrlKey) {
                             var element = event.target;
+                            element.style.border = "2px solid #FF0000";  // Red border                            
                             var elementInfo = {
                                 'tag': element.tagName,
                                 'id': element.id,
@@ -64,6 +65,11 @@ class Browser(QWebEngineView):
                                 'text': element.innerText.substring(0, 30),
                             };
                             window.myObj.elementClicked(JSON.stringify(elementInfo));
+                            // Remove the highlight after 2 seconds
+                            setTimeout(function() {
+                                element.style.backgroundColor = "";  // Remove background color
+                                element.style.border = "";  // Remove border
+                            }, 5000);  // 20 seconds                            
                         }
                     });
                 });
