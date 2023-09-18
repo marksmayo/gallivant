@@ -57,7 +57,7 @@ class Browser(QWebEngineView):
                     document.addEventListener('click', function(event) {
                         if (event.ctrlKey) {
                             var element = event.target;
-                            element.style.border = "2px solid #FF0000";  // Red border                            
+                            element.style.border = "2px solid #FF0000";  // Red border
                             var elementInfo = {
                                 'tag': element.tagName,
                                 'id': element.id,
@@ -69,7 +69,7 @@ class Browser(QWebEngineView):
                             setTimeout(function() {
                                 element.style.backgroundColor = "";  // Remove background color
                                 element.style.border = "";  // Remove border
-                            }, 5000);  // 20 seconds                            
+                            }, 5000);  // 20 seconds
                         }
                     });
                 });
@@ -104,7 +104,7 @@ class Browser(QWebEngineView):
 
         dialog.setLayout(layout)
         dialog.exec_()
-        print("Annotation" + self.annotation)
+        print(f"Annotation{self.annotation}")
         if self.annotation != "":
             entry = f"{self.annotation}"
             timestamp = datetime.now().strftime("%H:%M:%S")  # Get current time
