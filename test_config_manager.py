@@ -19,7 +19,7 @@ def test_load_corrupted_config(mocker):
     mock_file_content = '{"key": "value" '  # Corrupted JSON
     mocker.patch("builtins.open", mocker.mock_open(read_data=mock_file_content))
     mocker.patch(
-        "json.load", side_effect=json.JSONDecodeError("Invalid JSON", "doc", 0)
+        "json.load", side_effect=json.JSONDecodeError("Invalid JSON", "doc", 0),
     )
 
     with pytest.raises(json.JSONDecodeError):

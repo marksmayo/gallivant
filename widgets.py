@@ -73,7 +73,7 @@ class Browser(QWebEngineView):
                         }
                     });
                 });
-                """
+                """,
             )
 
     @pyqtSlot(str)

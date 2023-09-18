@@ -17,7 +17,7 @@ class Gallivant(QMainWindow):
         self.setWindowIcon(QIcon("images/gallivant.png"))
 
         self.menuBarManager = MenuBarManager(
-            self, self.exitApp, self.showConfig, self.showAbout
+            self, self.exitApp, self.showConfig, self.showAbout,
         )
         self.setMenuBar(self.menuBarManager.createMenuBar())
 
