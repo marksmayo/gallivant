@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
     QTreeWidgetItem,
     QVBoxLayout,
 )
+from PyQt5.QtGui import QIcon
 
 from webengine import WebEngine
 
@@ -20,7 +21,7 @@ from webengine import WebEngine
 class TreeWidget(QTreeWidget):
     def __init__(self):
         super().__init__()
-        self.setHeaderLabels(["Annotation", "Details", "Timestamp"])
+        self.setHeaderLabels(["Annotation", "Details", "Timestamp", "Screenshot"])
 
 
 class Browser(QWebEngineView):
@@ -36,6 +37,8 @@ class Browser(QWebEngineView):
 
         # Connect signals
         self.loadFinished.connect(self.onLoadFinished)
+
+        self.screenshotLabel = None
 
         # Initialize WebChannel
         self.channel = QWebChannel()
@@ -108,10 +111,16 @@ class Browser(QWebEngineView):
         if self.annotation != "":
             entry = f"{self.annotation}"
             timestamp = datetime.now().strftime("%H:%M:%S")  # Get current time
+            pixmap = self.grab()
+            icon = QIcon(pixmap)
+
             json_string = json.loads(json_string)
             item = QTreeWidgetItem(self.treeWidget)
             item.setText(0, entry)
             item.setText(2, timestamp)  # Add timestamp to the new colum
+            item.setIcon(3, icon)
+
+            self.treeWidget.itemClicked.connect(self.showFullSizeScreenshot)
 
             child1 = QTreeWidgetItem(item)
             child1.setText(0, "URL")
@@ -132,3 +141,14 @@ class Browser(QWebEngineView):
             child5 = QTreeWidgetItem(item)
             child5.setText(0, "Text")
             child5.setText(1, json_string["text"])
+
+            child6 = QTreeWidgetItem(item)
+            child6.setText(0, "Screenshot")
+            child6.setIcon(1, icon)
+
+    def showFullSizeScreenshot(self, item, column):
+        if item.text(0) == "Screenshot" and column == 1:
+            self.screenshotLabel = QLabel()
+            pixmap = self.grab()  # Capture current screenshot
+            self.screenshotLabel.setPixmap(pixmap)
+            self.screenshotLabel.show()

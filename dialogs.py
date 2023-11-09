@@ -13,7 +13,7 @@ def showDialog(parent, title):
     dialog = QMessageBox(parent)
     dialog.setWindowTitle(title)
     dialog.setText(
-        "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish."
+        "Gallivant is a simple exploratory testing tool. Set the URL you want to start at, and browse the site as you wish.",
     )
     dialog.setIcon(QMessageBox.Information)
     dialog.exec_()
