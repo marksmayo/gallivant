@@ -72,7 +72,7 @@ class Browser(QWebEngineView):
                             setTimeout(function() {
                                 element.style.backgroundColor = "";  // Remove background color
                                 element.style.border = "";  // Remove border
-                            }, 5000);  // 20 seconds
+                            }, 5000);  // 5 seconds
                         }
                     });
                 });
