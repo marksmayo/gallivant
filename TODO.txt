@@ -7,7 +7,6 @@ Menu File->Load
 Load from file
 Playback? would need to record every click/keystroke (option, given security risks)
 Click on record and go to url and highlight item on page
-Screenshots when you record a register
 Embed annotation in screenshot, with element highlighted?
 Reports - url with most click events, etc
 Classify registers as notes, bugs, feedback

@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from PyQt5.QtCore import QUrl, pyqtSlot
+from PyQt5.QtCore import QUrl, pyqtSlot, QSize
 from PyQt5.QtWebChannel import QWebChannel
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import (
@@ -67,12 +67,15 @@ class Browser(QWebEngineView):
                                 'class': element.className,
                                 'text': element.innerText.substring(0, 30),
                             };
-                            window.myObj.elementClicked(JSON.stringify(elementInfo));
-                            // Remove the highlight after 2 seconds
+                            // Delay before sending the information back to Python
+                            setTimeout(function() {
+                                window.myObj.elementClicked(JSON.stringify(elementInfo));
+                            }, 100);  // Delay of 100 milliseconds
+                            // Remove the highlight after a while
                             setTimeout(function() {
                                 element.style.backgroundColor = "";  // Remove background color
                                 element.style.border = "";  // Remove border
-                            }, 5000);  // 5 seconds
+                            }, 10000);  // 10 seconds
                         }
                     });
                 });
@@ -148,7 +151,10 @@ class Browser(QWebEngineView):
 
     def showFullSizeScreenshot(self, item, column):
         if item.text(0) == "Screenshot" and column == 1:
-            self.screenshotLabel = QLabel()
-            pixmap = self.grab()  # Capture current screenshot
+            if not self.screenshotLabel:
+                self.screenshotLabel = QLabel()
+            icon = item.icon(1)
+            size = QSize(1000, 1000)  # Specify the desired size of the pixmap
+            pixmap = icon.pixmap(size)
             self.screenshotLabel.setPixmap(pixmap)
             self.screenshotLabel.show()
