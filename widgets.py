@@ -60,7 +60,7 @@ class Browser(QWebEngineView):
                     document.addEventListener('click', function(event) {
                         if (event.ctrlKey) {
                             event.preventDefault();
-                            event.stopPropagation();                        
+                            event.stopPropagation();
                             var element = event.target;
                             element.style.border = "2px solid #FF0000";  // Red border
                             var elementInfo = {
