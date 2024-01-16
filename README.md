@@ -1,5 +1,7 @@
 ![Build status](https://github.com/marksmayo/gallivant/actions/workflows/black.yml/badge.svg)
 
+[![codecov](https://codecov.io/gh/marksmayo/gallivant/graph/badge.svg?token=PK2GZYRHM0)](https://codecov.io/gh/marksmayo/gallivant)
+
 <img src = "https://github.com/marksmayo/gallivant/blob/main/images/gallivant.png" width="150">
 
 # gallivant
