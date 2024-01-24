@@ -4,10 +4,12 @@ import pytest
 from PyQt5.QtWidgets import QApplication
 from dialogs import showDialog, showConfig
 
+
 # A fixture for QApplication instance
 @pytest.fixture(scope="module")
 def app():
     return QApplication([])
+
 
 # Test for showDialog function
 # Assuming showDialog configures and shows a dialog but does not return it
